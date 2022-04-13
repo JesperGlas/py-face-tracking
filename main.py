@@ -31,10 +31,28 @@ def run():
         
         # Video
         arg, frame = video.read()
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(
+            gray_frame,
+            scaleFactor = 1.3,
+            minNeighbors = 7,
+            minSize = (50, 50)
+        )
+                
+        # Draw rectangle on faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(
+                frame, 
+                (x, y), (x + w, y + h),
+                (0, 255, 0), 2
+            )
 
         # Update the image
         imgbytes = cv2.imencode('.png', frame)[1].tobytes() # Index 1 is image data
         window['-IMAGE-'].update(data = imgbytes)
+        
+        # Update window text
+        window['-TEXT-'].update(f'People: {len(faces)}')
     
     # Shutdown
     window.close()
