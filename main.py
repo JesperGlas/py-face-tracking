@@ -1,28 +1,35 @@
 import PySimpleGUI as psg
+import cv2
 
 TITLE : str = 'Face Tracking'
 VERSION : str = '1.0.0'
     
 def initLayout() -> list:
     return [
-        [psg.Text(f'{TITLE} - {VERSION}')],
-        [psg.Button('Test')],
-        [psg.Input()]
+        [psg.Image(key = '-IMAGE-')],
+        [psg.Text('People in frame: 0', key = '-TEXT-', expand_x = True, justification = 'c')]
     ]
 
 # initLayout
     
-def app():
+def run():
     layout : list = initLayout()
     
-    psg.Window('Face Tracking', layout).read()
+    window = psg.Window(f'{TITLE} - v{VERSION}', layout)
 
-# app
+    while True:
+        event, values = window.read()
+        if event == psg.WIN_CLOSED:
+            break
+        
+    window.close()
+
+# run
 
 def main():
     print(f'Loading {TITLE} v{VERSION}...')
     
-    app()
+    run()
     
 # main
     
